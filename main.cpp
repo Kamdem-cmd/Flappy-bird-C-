@@ -1,0 +1,66 @@
+#include <SDL3/SDL.h>
+#include <iostream>
+
+#define HEIGHT 720
+#define WIDTH 1024
+
+
+int main(){
+    std::cout<<"FLAPPY Bird en cours de developpement ...\n";
+
+    // initialise SDL3
+    int init = SDL_Init(SDL_INIT_VIDEO);
+    if(init < 0){
+        std::cerr << "Erreur d'initialisation de SDL3 " << SDL_GetError() << std::endl;
+        return 1;
+    }
+
+    // initialisation de la fenetre
+    SDL_Window* window = SDL_CreateWindow("Flappy Bird", WIDTH, HEIGHT, 0);
+    if(!window){
+        std::cerr<< "Erreur d'initialisation de la fenetre " << SDL_GetError() << std::endl;
+        SDL_Quit();
+        return 1; 
+    }
+
+    // initialisation du rendu
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, nullptr);
+    if(!renderer){
+        std::cerr << "Erreur d'initialisation du rendu " << SDL_GetError() << std::endl;
+        SDL_DestroyRenderer(renderer);
+        return 1;
+    }
+
+    bool running = true;
+    SDL_Event event;
+
+    // boucle principale
+    while(running){
+        // gestion d'evenement
+        while(SDL_PollEvent(&event)){
+            if(event.type == SDL_EVENT_QUIT){
+                running = false;
+            }
+        }
+        
+        // Chargement du rendu
+        SDL_SetRenderDrawColor(renderer, 30, 144, 255, 255); 
+        SDL_RenderClear(renderer); 
+
+        // affichage du rendu
+        SDL_RenderPresent(renderer);
+
+        // application du delay ~60fps
+        SDL_Delay(16);
+    }
+    //  destruction du rendu
+    SDL_DestroyRenderer(renderer);
+
+    //  destruction de la fenetre
+    SDL_DestroyWindow(window);
+
+    //  Quitter l'application
+    SDL_Quit();
+    std::cout<<"Fermeture de l'application effective ...\n";
+    return 0;
+}
