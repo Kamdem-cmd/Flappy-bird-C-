@@ -22,9 +22,11 @@
 - [X] Log simple dans la boucle
 
 ### Jour 3
-- [ ] Calculer le `deltaTime`
-- [ ] Afficher les FPS
-- [ ] Vérifier la stabilité
+- [X] Calculer le `deltaTime`
+- [X] Afficher les FPS
+- [X] Vérifier la stabilité
+
+📝 Note du jour : à present je comprend mieux l'utilité du calcul du deltaTime 
 
 ### Jour 4
 - [ ] Gérer les entrées clavier
