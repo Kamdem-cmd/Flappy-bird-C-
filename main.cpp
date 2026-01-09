@@ -1,9 +1,18 @@
 #include <SDL3/SDL.h>
 #include <iostream>
+#include <vector>
 
 #define HEIGHT 720
 #define WIDTH 1024
 
+// Structure player
+    struct Entity
+    {
+        float x, y; // position
+        float w, h; // taille
+    };
+
+void RenderEntities(SDL_Renderer* renderer, const std::vector<Entity>& entities);
 
 int main(){
     std::cout<<"FLAPPY Bird en cours de developpement ...\n";
@@ -44,6 +53,23 @@ int main(){
     const double MAX_DELTA = 0.05; // 50 ms
     double fpsTimer = 0.0;
     int frameCount = 0;
+    float gravity = 98.0f;
+    float masse = 3.0f;
+
+    Entity bird = {200, 150, 100, 50};
+
+    std::vector<Entity> entities;
+    
+    // Bloc1
+    entities.push_back({500.0f, 0.0f, 50.0f, 270.0f});
+    entities.push_back({500.0f, 720.0f - 350.0f, 50.0f, 350.0f});
+    // Bloc2
+    entities.push_back({750.0f, 0.0f, 50.0f, 325.0f});
+    entities.push_back({750.0f, 720.0f - 300.0f, 50.0f, 325.0f});
+    // Bloc3
+    entities.push_back({1000.0f, 0.0f, 50.0f, 250.0f});
+    entities.push_back({1000.0f, 720.0f - 350.0f, 50.0f, 350.0f});
+
 
     // boucle principale
     while(running){
@@ -61,19 +87,35 @@ int main(){
 
         if (deltaTime > MAX_DELTA) deltaTime = MAX_DELTA;
 
+        // Etat clavier
+        const bool* keyboard = SDL_GetKeyboardState(nullptr);
+        bool moveUp = keyboard[SDL_SCANCODE_SPACE];
+
+        // Mise à jour de la position du rectangle apres input
+        if(moveUp){
+            std::cout<<"UP ...\n";
+            bird.y -= 4 * masse * gravity * deltaTime;
+        }
+        // Mise à jour de la position du rectangle
+        bird.y += masse * gravity * deltaTime;
 
         // Chargement du rendu
         SDL_SetRenderDrawColor(renderer, 30, 144, 255, 255); 
         SDL_RenderClear(renderer); 
 
+        // Ajout du rectangle au rendu
+        SDL_FRect rectBird = {bird.x, bird.y, bird.w, bird.h};
+        SDL_RenderRect(renderer, &rectBird);
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);   // AGBR
+        SDL_RenderFillRect(renderer, &rectBird);
+
+        // Ajoutes des obstacles au rendu
+        SDL_SetRenderDrawColor(renderer, 45, 50, 255, 255);
+        RenderEntities(renderer, entities);
+
+
         // affichage du rendu
         SDL_RenderPresent(renderer);
-
-        // if(fps - previousFPS !=0){
-        //     std::cout<<"FPS: " << fps <<std::endl;
-        // }
-
-        // previousFPS = fps;
     
         fpsTimer += deltaTime;
         frameCount++;
@@ -98,4 +140,14 @@ int main(){
     SDL_Quit();
     std::cout<<"Fermeture de l'application effective ...\n";
     return 0;
+}
+
+
+void RenderEntities(SDL_Renderer* renderer, const std::vector<Entity>& entities)
+{
+    for (const auto& e : entities)
+    {
+        SDL_FRect rect = { e.x, e.y, e.w, e.h };
+        SDL_RenderFillRect(renderer, &rect);
+    }
 }

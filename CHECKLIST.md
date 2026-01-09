@@ -29,14 +29,16 @@
 📝 Note du jour : à present je comprend mieux l'utilité du calcul du deltaTime 
 
 ### Jour 4
-- [ ] Gérer les entrées clavier
-- [ ] Déplacer un rectangle
-- [ ] Mouvement indépendant du framerate
+- [X] Gérer les entrées clavier
+- [X] Déplacer un rectangle
+- [X] Mouvement indépendant du framerate
 
 ### Jour 5
-- [ ] Créer une structure `Entity`
-- [ ] Stocker position / taille
-- [ ] Dessiner plusieurs entités
+- [X] Créer une structure `Entity`
+- [X] Stocker position / taille
+- [X] Dessiner plusieurs entités
+
+📝 Note du jour : J'apprends la discipline en m'abstenant de faire des amélioration à mon projet tôt mais en suivant le programme de la CHECKLIST.
 
 ### Jour 6
 - [ ] Séparer logique / rendu
