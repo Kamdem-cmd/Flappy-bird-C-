@@ -166,11 +166,15 @@
 ## 📓 Journal quotidien
 
 ### 📅 Jour 1 — 2026-01-07
-⏱️ Temps : 20 min  
+⏱️ Temps : 30 min - 45 min  
 ☑️ Tâches cochées :
 - [X] Créer le repo / dossier projet
 - [X] Compiler un `main.cpp`
 - [X] Ouvrir une fenêtre SDL
+
+- [X] Créer la boucle principale
+- [X] Gérer les événements (quit)
+- [X] Log simple dans la boucle
 
 🧠 Ce que j’ai appris :
 - On libère les ressources (rendu, fenetre, SDL), dans l'ordre inverse de leur initialisation
@@ -179,6 +183,60 @@
 - la seule difficulté était au niveau de la synthaxe qui n'est pas encore tres maîtrisé
 
 ➡️ Prochaine micro-action :
-- [ ] Créer la boucle principale
-- [ ] Gérer les événements (quit)
-- [ ] Log simple dans la boucle
+- [ ] Calculer le `deltaTime`
+- [ ] Afficher les FPS
+- [ ] Vérifier la stabilité
+
+### 📅 Jour 2 — 2026-01-08
+⏱️ Temps : 20 min  
+☑️ Tâches cochées :
+- [X] Calculer le `deltaTime`
+- [X] Afficher les FPS
+- [X] Vérifier la stabilité
+
+🧠 Ce que j’ai appris : Astuce pour afficher les FPS en console à intervalle de temps régulier. 
+```cpp
+double fpsTimer = 0.0;
+int frameCount = 0;
+
+fpsTimer += deltaTime;
+frameCount++;
+
+if (fpsTimer >= 1.0)
+{
+    double fps = frameCount / fpsTimer;
+    std::cout << "FPS: " << fps << std::endl;
+
+    fpsTimer -= 1.0; // au lieu de = 0.0
+    frameCount = 0;
+}
+```
+
+⚠️ Difficulté : obtenir les bonnes valeurs de FPS par calcul.
+
+➡️ Prochaine micro-action :
+- [ ] Gérer les entrées clavier
+- [ ] Déplacer un rectangle
+- [ ] Mouvement indépendant du framerate
+
+### 📅 Jour 3 — 2026-01-09
+⏱️ Temps : 30 min - 45 min 
+☑️ Tâches cochées :
+- [X] Gérer les entrées clavier
+- [X] Déplacer un rectangle
+- [X] Mouvement indépendant du framerate
+
+- [X] Créer une structure `Entity`
+- [X] Stocker position / taille
+- [X] Dessiner plusieurs entités
+
+🧠 Ce que j’ai appris : SDL_PollEvent met à jour j'etat des inputs doit venir avant SDL_GetKeyboardState (retourne un pointeur) qui fait la lecture de l'etat encours du clavier. 
+SDL_GetKeyboardState = lecture passive
+SDL_PollEvent = mise à jour active
+
+⚠️ Difficulté : s'en tenir au programme sans ajouter d'autres fonctionnalitées.
+
+➡️ Prochaine micro-action :
+- [ ] Séparer logique / rendu
+- [ ] Créer `Game.h / Game.cpp`
+- [ ] Nettoyage minimal
