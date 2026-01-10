@@ -25,13 +25,22 @@ private:
     void HandleEvents();
     void Update(double deltaTime);
     void Render();
+    void RenderEntities(SDL_Renderer* renderer, const std::vector<Entity>& entities);
 
 private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
+    bool running;
+    const bool* keyboard = nullptr;         // Etat clavier
+
+    float gravity = 98.0f;
+    float masse = 3.0f;
+    float speed = 100.0f;
+
+    Entity bird;
 
     Uint64 tickPrecedent;
     std::vector<Entity> entities;
 
-}
+};
