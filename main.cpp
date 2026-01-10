@@ -1,16 +1,6 @@
-#include <SDL3/SDL.h>
-#include <iostream>
-#include <vector>
+#include "Game.h"
 
-#define HEIGHT 720
-#define WIDTH 1024
 
-// Structure player
-    struct Entity
-    {
-        float x, y; // position
-        float w, h; // taille
-    };
 
 void RenderEntities(SDL_Renderer* renderer, const std::vector<Entity>& entities);
 
