@@ -9,10 +9,7 @@ int main(){
     game.Run();
     
     game.Shutdown();
-    
+
     std::cout<<"Fermeture de l'application effective ...\n";
     return 0;
 }
-
-
-
