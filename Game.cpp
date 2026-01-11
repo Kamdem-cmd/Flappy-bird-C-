@@ -28,7 +28,7 @@ bool Game::Init(){
     SDL_SetRenderVSync(renderer, 1);
 
     // Player
-    bird = {200, 150, 100, 50};
+    bird = {200, 150, 50, 50};
     // entities.push_back(bird);
 
     // Bloc1

@@ -3,6 +3,9 @@
 #include <SDL3/SDL.h>
 #include <iostream>
 #include <vector>
+#include "external/imgui/imgui.h"
+#include "external/imgui/backends/imgui_impl_sdl3.h"
+#include "external/imgui/backends/imgui_impl_sdlrenderer3.h"
 
 #define HEIGHT 720
 #define WIDTH 1024
@@ -35,7 +38,7 @@ private:
     const bool* keyboard = nullptr;         // Etat clavier
 
     float gravity = 98.0f;
-    float masse = 3.0f;
+    float masse = 1.0f;
     float speed = 100.0f;
 
     Entity bird;

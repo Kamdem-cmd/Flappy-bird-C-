@@ -41,12 +41,12 @@
 📝 Note du jour : J'apprends la discipline en m'abstenant de faire des amélioration à mon projet tôt mais en suivant le programme de la CHECKLIST.
 
 ### Jour 6
-- [ ] Séparer logique / rendu
-- [ ] Créer `Game.h / Game.cpp`
-- [ ] Nettoyage minimal
+- [X] Séparer logique / rendu
+- [X] Créer `Game.h / Game.cpp`
+- [X] Nettoyage minimal
 
 ### Jour 7
-- [ ] Intégrer ImGui
+- [X] Intégrer ImGui
 - [ ] Fenêtre debug
 - [ ] Afficher FPS / position joueur
 
@@ -240,3 +240,11 @@ SDL_PollEvent = mise à jour active
 - [ ] Séparer logique / rendu
 - [ ] Créer `Game.h / Game.cpp`
 - [ ] Nettoyage minimal
+
+### 📅 Jour 4 — 2026-01-10
+⏱️ Temps : 50 min - 60 min 
+☑️ Tâches cochées :
+
+🧠 Ce que j’ai appris :
+⚠️ Difficulté :
+➡️ Prochaine micro-action :
