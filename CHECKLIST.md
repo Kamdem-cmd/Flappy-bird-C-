@@ -47,20 +47,20 @@
 
 ### Jour 7
 - [X] Intégrer ImGui
-- [ ] Fenêtre debug
-- [ ] Afficher FPS / position joueur
+- [X] Fenêtre debug
+- [X] Afficher FPS / position joueur
 
 ---
 
 ## 🟩 SEMAINE 2 — JEU MINIMAL
 
 ### Jour 8
-- [ ] Créer le joueur (oiseau)
-- [ ] Appliquer une gravité simple
+- [X] Créer le joueur (oiseau)
+- [X] Appliquer une gravité simple
 
 ### Jour 9
-- [ ] Ajouter le saut (input)
-- [ ] Ajuster la physique (vitesse, gravité)
+- [X] Ajouter le saut (input)
+- [X] Ajuster la physique (vitesse, gravité)
 
 ### Jour 10
 - [ ] Charger un sprite avec stb_image

@@ -15,6 +15,8 @@ struct Entity
 {
     float x, y; // position
     float w, h; // taille
+
+    float velocityY = 0.0f;
 };
 
 class Game
@@ -37,9 +39,10 @@ private:
     bool running;
     const bool* keyboard = nullptr;         // Etat clavier
 
-    float gravity = 98.0f;
-    float masse = 1.0f;
+    const float gravity = 98.0f;
+    float impulsion = 4.0f;
     float speed = 100.0f;
+    double fps = 0.0;
 
     Entity bird;
 

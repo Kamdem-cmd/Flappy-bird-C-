@@ -24,6 +24,14 @@ bool Game::Init(){
         return false;
     }
 
+    // ImgUI
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
+    ImGui_ImplSDLRenderer3_Init(renderer);
+
     // Activé le VSync
     SDL_SetRenderVSync(renderer, 1);
 
@@ -68,7 +76,7 @@ void Game::Run(){
 
         if (fpsTimer >= 1.0)
         {
-            double fps = frameCount / fpsTimer;
+            fps = frameCount / fpsTimer;
             std::cout << "FPS: " << fps << std::endl;
 
             fpsTimer -= 1.0; // au lieu de = 0.0
@@ -88,6 +96,11 @@ void Game::Run(){
 }
 
 void Game::Shutdown(){
+    //  destruction ImgUI
+    ImGui_ImplSDLRenderer3_Shutdown();
+    ImGui_ImplSDL3_Shutdown();
+    ImGui::DestroyContext();
+
     //  destruction du rendu
     SDL_DestroyRenderer(renderer);
 
@@ -96,7 +109,6 @@ void Game::Shutdown(){
 
     //  Quitter l'application
     SDL_Quit();
-
 }
 
 void Game::HandleEvents(){
@@ -104,6 +116,7 @@ void Game::HandleEvents(){
 
     // gestion d'evenement
     while(SDL_PollEvent(&event)){
+        ImGui_ImplSDL3_ProcessEvent(&event);
         if(event.type == SDL_EVENT_QUIT){
             running = false;
             std::cout<<"Quit ...\n";
@@ -114,15 +127,17 @@ void Game::HandleEvents(){
 void Game::Update(double deltaTime){
     // Etat clavier
     keyboard = SDL_GetKeyboardState(nullptr);
+
+     // Mise à jour de la position du rectangle
+    bird.y += gravity * (float)deltaTime;
     
     // Mise à jour de la position du rectangle apres input
     if(keyboard[SDL_SCANCODE_SPACE]){
         std::cout<<"UP ...\n";
-        bird.y -= 4 * masse * gravity * deltaTime;
+        
+        bird.y -= impulsion * gravity * deltaTime;
     }
-    // Mise à jour de la position du rectangle
-    bird.y += masse * gravity * deltaTime;
-
+   
     for (auto& e : entities)
     {
         e.x -= speed * deltaTime; // vitesse temporaire
@@ -143,6 +158,21 @@ void Game::Render(){
     // Ajoutes des obstacles au rendu
     SDL_SetRenderDrawColor(renderer, 45, 50, 255, 255);
     RenderEntities(renderer, entities);
+
+    // ImgUI render
+    ImGui_ImplSDLRenderer3_NewFrame();
+    ImGui_ImplSDL3_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::Begin("Debug");
+    ImGui::Text("FPS: %.1f", fps);
+    ImGui::Text("Player X: %.2f", bird.x);
+    ImGui::Text("Player Y: %.2f", bird.y);
+    ImGui::End();
+
+    ImGui::Render();
+    ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer);
+
 
     // affichage du rendu
     SDL_RenderPresent(renderer);
