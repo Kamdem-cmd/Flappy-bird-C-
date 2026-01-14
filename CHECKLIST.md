@@ -63,16 +63,16 @@
 - [X] Ajuster la physique (vitesse, gravité)
 
 ### Jour 10
-- [ ] Charger un sprite avec stb_image
-- [ ] Remplacer le rectangle
+- [X] Charger un sprite avec stb_image
+- [X] Remplacer le rectangle
 
 ### Jour 11
-- [ ] Créer les tuyaux (obstacles)
-- [ ] Défilement horizontal
+- [X] Créer les tuyaux (obstacles)
+- [X] Défilement horizontal
 
 ### Jour 12
 - [ ] Détection de collision (oiseau / tuyaux)
-- [ ] Détection sol / plafond
+- [X] Détection sol / plafond
 
 ### Jour 13
 - [ ] Condition de défaite
@@ -244,7 +244,35 @@ SDL_PollEvent = mise à jour active
 ### 📅 Jour 4 — 2026-01-10
 ⏱️ Temps : 50 min - 60 min 
 ☑️ Tâches cochées :
+- [X] Séparer logique / rendu
+- [X] Créer `Game.h / Game.cpp`
+- [X] Nettoyage minimal
 
 🧠 Ce que j’ai appris :
 ⚠️ Difficulté :
 ➡️ Prochaine micro-action :
+
+### 📅 Jour 5 — 2026-01-11
+⏱️ Temps : 20 min 
+☑️ Tâches cochées :
+- [X] Intégrer ImGui
+- [X] Fenêtre debug
+- [X] Afficher FPS / position joueur
+
+🧠 Ce que j’ai appris :
+⚠️ Difficulté :
+➡️ Prochaine micro-action :
+
+### 📅 Jour 6 — 2026-01-12
+⏱️ Temps : 15 min - 20 min 
+☑️ Tâches cochées :
+- [X] Créer le joueur (oiseau)
+- [X] Appliquer une gravité simple
+- [X] Ajouter le saut (input)
+- [X] Ajuster la physique (vitesse, gravité)
+
+🧠 Ce que j’ai appris :
+⚠️ Difficulté :
+➡️ Prochaine micro-action :
+- [ ] Charger un sprite avec stb_image
+- [ ] Remplacer le rectangle
