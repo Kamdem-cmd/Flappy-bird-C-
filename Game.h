@@ -17,6 +17,9 @@ struct Entity
     float w, h; // taille
 
     float velocityY = 0.0f;
+    SDL_Texture* Texture = nullptr;
+    SDL_Surface* surface = nullptr;
+    int channel;
 };
 
 class Game
@@ -48,5 +51,8 @@ private:
 
     Uint64 tickPrecedent;
     std::vector<Entity> entities;
+
+    unsigned char* pixels = nullptr;
+    
 
 };

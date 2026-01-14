@@ -1,5 +1,12 @@
 #include "Game.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "external/stb_image.h"
+
+const float FLOOR = 720.0f;
+const float TOP = 0.0f;
+
+
 bool Game::Init(){
     // initialise SDL3
     int init = SDL_Init(SDL_INIT_VIDEO);
@@ -49,6 +56,34 @@ bool Game::Init(){
     entities.push_back({1000.0f, 0.0f, 50.0f, 250.0f});
     entities.push_back({1000.0f, 720.0f - 350.0f, 50.0f, 350.0f});
 
+    int width, height, channels;
+    width = (int)bird.w;
+    height = (int)bird.h;
+    pixels = stbi_load(
+        "assets/img/flappy04.png",
+        &width,
+        &height,
+        &bird.channel,
+        4
+    );
+
+    if (!pixels){
+        SDL_Log("Erreur chargement image");
+        return false;
+    }
+
+    bird.surface = SDL_CreateSurfaceFrom(
+        width,
+        height,
+        SDL_PIXELFORMAT_RGBA32,
+        pixels,
+        width * 4
+    );
+
+    bird.Texture = SDL_CreateTextureFromSurface(renderer, bird.surface);
+
+    SDL_DestroySurface(bird.surface);
+    stbi_image_free(pixels);
     return true;
 }
 
@@ -91,11 +126,13 @@ void Game::Run(){
 
         // Render
         Render();
-        
     }
 }
 
 void Game::Shutdown(){
+    //  Liberation de ressource stb_image
+    SDL_DestroyTexture(bird.Texture);
+
     //  destruction ImgUI
     ImGui_ImplSDLRenderer3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
@@ -137,10 +174,22 @@ void Game::Update(double deltaTime){
         
         bird.y -= impulsion * gravity * deltaTime;
     }
+
+    // forcer l'affichage du joueur dans les limites de l'écran
+    if(bird.y < TOP){
+        bird.y = TOP;
+    }
+    if((bird.y + bird.h) > FLOOR){
+        bird.y = FLOOR - bird.h;
+    }
    
+    // Deplacement tuyaux
     for (auto& e : entities)
     {
         e.x -= speed * deltaTime; // vitesse temporaire
+        // if(collisionEntite(e)){
+        //     std::cout << "Game Over, Objet touché.\n";
+        // }
     }
 }
 
@@ -149,11 +198,12 @@ void Game::Render(){
     SDL_SetRenderDrawColor(renderer, 30, 144, 255, 255); 
     SDL_RenderClear(renderer); 
 
-    // Ajout du rectangle au rendu
+    // Ajout du joueur au rendu
     SDL_FRect rectBird = {bird.x, bird.y, bird.w, bird.h};
     SDL_RenderRect(renderer, &rectBird);
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);   // AGBR
-    SDL_RenderFillRect(renderer, &rectBird);
+    // SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);   // AGBR
+    // SDL_RenderFillRect(renderer, &rectBird);
+    SDL_RenderTexture(renderer, bird.Texture, nullptr, &rectBird);
 
     // Ajoutes des obstacles au rendu
     SDL_SetRenderDrawColor(renderer, 45, 50, 255, 255);
@@ -172,7 +222,6 @@ void Game::Render(){
 
     ImGui::Render();
     ImGui_ImplSDLRenderer3_RenderDrawData(ImGui::GetDrawData(), renderer);
-
 
     // affichage du rendu
     SDL_RenderPresent(renderer);
