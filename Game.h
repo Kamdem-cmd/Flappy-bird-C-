@@ -34,7 +34,8 @@ private:
     void Update(double deltaTime);
     void Render();
     void RenderEntities(SDL_Renderer* renderer, const std::vector<Entity>& entities);
-
+    bool hasEntitiesIntersect(Entity a, Entity b);
+    void Reset();
 private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;

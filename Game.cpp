@@ -5,6 +5,7 @@
 
 const float FLOOR = 720.0f;
 const float TOP = 0.0f;
+bool GameOver = false;
 
 
 bool Game::Init(){
@@ -43,7 +44,7 @@ bool Game::Init(){
     SDL_SetRenderVSync(renderer, 1);
 
     // Player
-    bird = {200, 150, 50, 50};
+    bird = {200, 150, 70, 50};
     // entities.push_back(bird);
 
     // Bloc1
@@ -60,7 +61,7 @@ bool Game::Init(){
     width = (int)bird.w;
     height = (int)bird.h;
     pixels = stbi_load(
-        "assets/img/flappy04.png",
+        "assets/img/flappy.png",
         &width,
         &height,
         &bird.channel,
@@ -130,6 +131,8 @@ void Game::Run(){
 }
 
 void Game::Shutdown(){
+    entities.clear();
+
     //  Liberation de ressource stb_image
     SDL_DestroyTexture(bird.Texture);
 
@@ -162,47 +165,62 @@ void Game::HandleEvents(){
 }
 
 void Game::Update(double deltaTime){
-    // Etat clavier
-    keyboard = SDL_GetKeyboardState(nullptr);
-
-     // Mise à jour de la position du rectangle
-    bird.y += gravity * (float)deltaTime;
     
-    // Mise à jour de la position du rectangle apres input
-    if(keyboard[SDL_SCANCODE_SPACE]){
-        std::cout<<"UP ...\n";
-        
-        bird.y -= impulsion * gravity * deltaTime;
-    }
-
-    // forcer l'affichage du joueur dans les limites de l'écran
-    if(bird.y < TOP){
-        bird.y = TOP;
-    }
-    if((bird.y + bird.h) > FLOOR){
-        bird.y = FLOOR - bird.h;
-    }
-   
-    // Deplacement tuyaux
-    for (auto& e : entities)
+    if (!GameOver)
     {
-        e.x -= speed * deltaTime; // vitesse temporaire
-        // if(collisionEntite(e)){
-        //     std::cout << "Game Over, Objet touché.\n";
-        // }
+        // Etat clavier
+        keyboard = SDL_GetKeyboardState(nullptr);
+
+        // Mise à jour de la position du rectangle
+        bird.y += gravity * (float)deltaTime;
+        
+        // Mise à jour de la position du rectangle apres input
+        if(keyboard[SDL_SCANCODE_SPACE]){
+            std::cout<<"UP ...\n";
+            
+            bird.y -= impulsion * gravity * deltaTime;
+        }
+
+        // forcer l'affichage du joueur dans les limites de l'écran
+        if(bird.y < TOP){
+            bird.y = TOP;
+        }
+        if((bird.y + bird.h) > FLOOR){
+            bird.y = FLOOR - bird.h;
+        }
+    
+        // Deplacement tuyaux
+        for (auto& e : entities)
+        {
+            e.x -= speed * deltaTime; // vitesse temporaire
+            if(hasEntitiesIntersect(bird, e)){
+                std::cout << "Game Over, Objet touché.\n";
+                GameOver = true;
+            }
+        }
+    }else{
+        // Etat clavier
+        keyboard = SDL_GetKeyboardState(nullptr);
+        if(keyboard[SDL_SCANCODE_R]){
+            Reset();
+            GameOver = false;
+        }
     }
 }
+    
 
 void Game::Render(){
     // Chargement du rendu
     SDL_SetRenderDrawColor(renderer, 30, 144, 255, 255); 
     SDL_RenderClear(renderer); 
 
+    
+
     // Ajout du joueur au rendu
     SDL_FRect rectBird = {bird.x, bird.y, bird.w, bird.h};
     SDL_RenderRect(renderer, &rectBird);
-    // SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);   // AGBR
-    // SDL_RenderFillRect(renderer, &rectBird);
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);   // AGBR
+    SDL_RenderFillRect(renderer, &rectBird);
     SDL_RenderTexture(renderer, bird.Texture, nullptr, &rectBird);
 
     // Ajoutes des obstacles au rendu
@@ -218,6 +236,9 @@ void Game::Render(){
     ImGui::Text("FPS: %.1f", fps);
     ImGui::Text("Player X: %.2f", bird.x);
     ImGui::Text("Player Y: %.2f", bird.y);
+    ImGui::Text("Gavité: %.1f", gravity);
+    ImGui::Text("impulsion: %.1f", impulsion);
+    ImGui::Text("speed: %.1f", speed);
     ImGui::End();
 
     ImGui::Render();
@@ -234,4 +255,27 @@ void Game::RenderEntities(SDL_Renderer* renderer, const std::vector<Entity>& ent
         SDL_FRect rect = { e.x, e.y, e.w, e.h };
         SDL_RenderFillRect(renderer, &rect);
     }
+}
+
+bool Game::hasEntitiesIntersect(Entity a, Entity b){
+    return a.x < b.x + b.w &&
+           a.x + a.w > b.x &&
+           a.y < b.y + b.h &&
+           a.y + a.h > b.y;
+}
+
+void Game::Reset(){
+    bird.y = 150.0f;
+
+    entities.clear();
+
+    // Bloc1
+    entities.push_back({500.0f, 0.0f, 50.0f, 270.0f});
+    entities.push_back({500.0f, 720.0f - 350.0f, 50.0f, 350.0f});
+    // Bloc2
+    entities.push_back({750.0f, 0.0f, 50.0f, 325.0f});
+    entities.push_back({750.0f, 720.0f - 300.0f, 50.0f, 325.0f});
+    // Bloc3
+    entities.push_back({1000.0f, 0.0f, 50.0f, 250.0f});
+    entities.push_back({1000.0f, 720.0f - 350.0f, 50.0f, 350.0f});
 }

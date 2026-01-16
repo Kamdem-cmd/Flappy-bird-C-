@@ -71,18 +71,18 @@
 - [X] Défilement horizontal
 
 ### Jour 12
-- [ ] Détection de collision (oiseau / tuyaux)
+- [X] Détection de collision (oiseau / tuyaux)
 - [X] Détection sol / plafond
 
 ### Jour 13
-- [ ] Condition de défaite
-- [ ] Reset du jeu
+- [X] Condition de défaite
+- [X] Reset du jeu
 
 ### Jour 14
-- [ ] Debug ImGui :
-  - [ ] gravité
-  - [ ] force du saut
-  - [ ] vitesse tuyaux
+- [X] Debug ImGui :
+  - [X] gravité
+  - [X] force du saut
+  - [X] vitesse tuyaux
 
 ---
 
