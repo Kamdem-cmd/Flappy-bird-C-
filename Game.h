@@ -36,6 +36,9 @@ private:
     void RenderEntities(SDL_Renderer* renderer, const std::vector<Entity>& entities);
     bool hasEntitiesIntersect(Entity a, Entity b);
     void Reset();
+    
+    void ImGuiInit(SDL_Renderer* renderer, SDL_Window* window);
+    void StbSpriteToEntity(const char* path, Entity &e);
 private:
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
@@ -45,15 +48,11 @@ private:
 
     const float gravity = 98.0f;
     float impulsion = 4.0f;
-    float speed = 100.0f;
+    float speedPipe = 100.0f;
     double fps = 0.0;
 
     Entity bird;
 
     Uint64 tickPrecedent;
     std::vector<Entity> entities;
-
-    unsigned char* pixels = nullptr;
-    
-
 };

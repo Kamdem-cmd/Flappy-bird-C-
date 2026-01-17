@@ -33,12 +33,7 @@ bool Game::Init(){
     }
 
     // ImgUI
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGui::StyleColorsDark();
-
-    ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
-    ImGui_ImplSDLRenderer3_Init(renderer);
+    ImGuiInit(renderer, window);
 
     // Activé le VSync
     SDL_SetRenderVSync(renderer, 1);
@@ -47,44 +42,12 @@ bool Game::Init(){
     bird = {200, 150, 70, 50};
     // entities.push_back(bird);
 
-    // Bloc1
-    entities.push_back({500.0f, 0.0f, 50.0f, 270.0f});
-    entities.push_back({500.0f, 720.0f - 350.0f, 50.0f, 350.0f});
-    // Bloc2
-    entities.push_back({750.0f, 0.0f, 50.0f, 325.0f});
-    entities.push_back({750.0f, 720.0f - 300.0f, 50.0f, 325.0f});
-    // Bloc3
-    entities.push_back({1000.0f, 0.0f, 50.0f, 250.0f});
-    entities.push_back({1000.0f, 720.0f - 350.0f, 50.0f, 350.0f});
+    // ajout d'entités (tuyaux)
+    Reset();
 
-    int width, height, channels;
-    width = (int)bird.w;
-    height = (int)bird.h;
-    pixels = stbi_load(
-        "assets/img/flappy.png",
-        &width,
-        &height,
-        &bird.channel,
-        4
-    );
+    // ajout de l'image au joueur
+    StbSpriteToEntity("assets/img/flappy.png", bird);
 
-    if (!pixels){
-        SDL_Log("Erreur chargement image");
-        return false;
-    }
-
-    bird.surface = SDL_CreateSurfaceFrom(
-        width,
-        height,
-        SDL_PIXELFORMAT_RGBA32,
-        pixels,
-        width * 4
-    );
-
-    bird.Texture = SDL_CreateTextureFromSurface(renderer, bird.surface);
-
-    SDL_DestroySurface(bird.surface);
-    stbi_image_free(pixels);
     return true;
 }
 
@@ -192,7 +155,7 @@ void Game::Update(double deltaTime){
         // Deplacement tuyaux
         for (auto& e : entities)
         {
-            e.x -= speed * deltaTime; // vitesse temporaire
+            e.x -= speedPipe * deltaTime; // vitesse temporaire
             if(hasEntitiesIntersect(bird, e)){
                 std::cout << "Game Over, Objet touché.\n";
                 GameOver = true;
@@ -238,7 +201,7 @@ void Game::Render(){
     ImGui::Text("Player Y: %.2f", bird.y);
     ImGui::Text("Gavité: %.1f", gravity);
     ImGui::Text("impulsion: %.1f", impulsion);
-    ImGui::Text("speed: %.1f", speed);
+    ImGui::Text("speed Tuyau: %.1f", speedPipe);
     ImGui::End();
 
     ImGui::Render();
@@ -278,4 +241,45 @@ void Game::Reset(){
     // Bloc3
     entities.push_back({1000.0f, 0.0f, 50.0f, 250.0f});
     entities.push_back({1000.0f, 720.0f - 350.0f, 50.0f, 350.0f});
+}
+
+void Game::ImGuiInit(SDL_Renderer* renderer, SDL_Window* window){
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplSDL3_InitForSDLRenderer(window, renderer);
+    ImGui_ImplSDLRenderer3_Init(renderer);
+}
+
+void Game::StbSpriteToEntity(const char* path, Entity &e){
+    int width, height, channels;
+    width = (int)e.w;
+    height = (int)e.h;
+    unsigned char* pixels = stbi_load(
+        path,
+        &width,
+        &height,
+        &e.channel,
+        4
+    );
+
+    if (!pixels){
+        SDL_Log("Erreur chargement image");
+        std::cout<<"Erreur lors du chargement de l'image";
+        // return false;
+    }
+
+    e.surface = SDL_CreateSurfaceFrom(
+        width,
+        height,
+        SDL_PIXELFORMAT_RGBA32,
+        pixels,
+        width * 4
+    );
+
+    e.Texture = SDL_CreateTextureFromSurface(renderer, e.surface);
+
+    SDL_DestroySurface(e.surface);
+    stbi_image_free(pixels);
 }

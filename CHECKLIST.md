@@ -89,8 +89,8 @@
 ## 🟨 SEMAINE 3 — DISCIPLINE & STRUCTURE
 
 ### Jour 15
-- [ ] Nettoyage de code léger
-- [ ] Renommer variables / fonctions
+- [X] Nettoyage de code léger
+- [X] Renommer variables / fonctions
 
 ### Jour 16
 - [ ] Créer un `InputManager`
